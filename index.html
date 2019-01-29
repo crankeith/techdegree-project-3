@@ -3,9 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Register for Full Stack Conf</title>
+  <title>Register for Full Stack Conf</title>
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700" rel="stylesheet" type="text/css">
-	<link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 	<div class="container">
@@ -34,7 +35,8 @@
           <option value="designer">Designer</option>          
           <option value="student">Student</option>
           <option value="other">Other</option>  
-        </select>           
+        </select>
+        <input id="titleOther" type="text" placeholder="Enter your job role"/>
       </fieldset>
       
       <fieldset class="shirt">
@@ -62,6 +64,7 @@
         <div id="colors-js-puns" class="">
           <label for="color">Color:</label>
           <select id="color">
+            <option value="">Select Color</option>
             <option value="cornflowerblue">Cornflower Blue (JS Puns shirt only)</option>
             <option value="darkslategrey">Dark Slate Grey (JS Puns shirt only)</option> 
             <option value="gold">Gold (JS Puns shirt only)</option> 
@@ -151,5 +154,10 @@
     </form>
 
 	</div>
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" src="./js/app.js"></script>
 </body>
 </html>
