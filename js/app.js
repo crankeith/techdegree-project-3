@@ -1,6 +1,9 @@
+//Variables
+let totalCost = 0;
 //Selectors
 const color = $('#color');
 const activityList = $('.activities input');
+const totalCostElement = $('<p id="totalCost">Total Cost: $<span> -</span></p>');
 
 //Regex
 const dayTimeRegex = /— [\w\s\d-]+/;
@@ -20,6 +23,9 @@ $('#title').on('change', (e) => {
         $("#titleOther").show();
     }
 });
+
+// Insert total cost element
+$('.activities').after(totalCostElement);
 
 //----------
 // TSHIRT DESIGN
@@ -66,13 +72,15 @@ $('#design').on('change', (e) => {
 //Event listener for change on activity list that will disable checkboxes if datetime match and tally total cost
 activityList.on('change', (e)=>{
     checkActivities(activityList, e.target);
+    totalCost = handleCost(totalCost, e.target);
+    $('#totalCost span').text(totalCost);
 });
 
 //Function to loop through each activity and disable the ones that match datetime in activity name
 const checkActivities = (activities, checkedActivity) => {
     const activityText = checkedActivity.nextSibling.textContent;
     const activityTextDayTimeArr = activityText.match(dayTimeRegex);
-    const activityTextDayTime = activityTextDayTimeArr[0];
+    const activityTextDayTime = activityTextDayTimeArr ? activityTextDayTimeArr[0] : undefined;
 
     for(let i = 0; i < activities.length; i++){
         const str = activities[i].nextSibling.textContent;
@@ -88,13 +96,25 @@ const checkActivities = (activities, checkedActivity) => {
                 } else {
                     $(activities[i]).attr('disabled', false)
                 }
-            } else if (!activities[i].checked) {
+            } else if (!activities[i].checked && !activities[i].disabled) {
                 $(activities[i]) .attr('disabled', false)
             }
         }
     }
 };
+
+const handleCost = (currentTotal, checkedActivity) => {
+    const priceStr =  checkedActivity.nextSibling.textContent.match(priceRegex);
+    const price = Number(priceStr[0].replace(/\$/,''));
+    if(checkedActivity.checked){
+        return currentTotal += price;
+    } else {
+        return currentTotal -= price;
+    }
+};
 //Create total element in Javascript and append
+
+
 //Create variable to store running total and a function to update total element value
 
 
