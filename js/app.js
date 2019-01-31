@@ -1,4 +1,10 @@
+//Selectors
 const color = $('#color');
+const activityList = $('.activities input');
+
+//Regex
+const dayTimeRegex = /— [\w\s\d-]+/;
+const priceRegex = /\$\d+/;
 
 //Set focus to the first field on page load
 $( window ).on('load', function() {
@@ -51,11 +57,6 @@ $('#design').on('change', (e) => {
 //----------
 // ACTIVITIES
 //----------
-
-const dayTimeRegex = /— [\w\s\d-]+/;
-const priceRegex = /\$\d+/;
-const activityList = $('.activities input');
-
 //Pseudo coe to test regex
 // const dayTime =  "JavaScript Frameworks Workshop — Tuesday 9am-12pm, $100".match(dayTimeRegex); //returns an array
 // const price =  "JavaScript Frameworks Workshop — Tuesday 9am-12pm, $100".match(priceRegex);
