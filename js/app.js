@@ -51,17 +51,48 @@ $('#design').on('change', (e) => {
 //----------
 // ACTIVITIES
 //----------
-//Some sample code/regex to retrieve the day/time for comparison
+
 const dayTimeRegex = /— [\w\s\d-]+/;
 const priceRegex = /\$\d+/;
-const dayTime =  "JavaScript Frameworks Workshop — Tuesday 9am-12pm, $100".match(dayTimeRegex); //returns an array
-const price =  "JavaScript Frameworks Workshop — Tuesday 9am-12pm, $100".match(priceRegex);
-const dayTimeChosen = dayTime[0];
-const priceChosen = Number(price[0].replace(/\$/,''));
-console.log(dayTimeChosen);
-console.log(priceChosen);
-//Add event listener for change? that will disable checkboxes based on function
-//Create function to use when looping through each item to hide ones that match "value"
+const activityList = $('.activities input');
+
+//Pseudo coe to test regex
+// const dayTime =  "JavaScript Frameworks Workshop — Tuesday 9am-12pm, $100".match(dayTimeRegex); //returns an array
+// const price =  "JavaScript Frameworks Workshop — Tuesday 9am-12pm, $100".match(priceRegex);
+// const dayTimeChosen = dayTime[0];
+// const priceChosen = Number(price[0].replace(/\$/,''));
+
+//Event listener for change on activity list that will disable checkboxes if datetime match and tally total cost
+activityList.on('change', (e)=>{
+    checkActivities(activityList, e.target);
+});
+
+//Function to loop through each activity and disable the ones that match datetime in activity name
+const checkActivities = (activities, checkedActivity) => {
+    const activityText = checkedActivity.nextSibling.textContent;
+    const activityTextDayTimeArr = activityText.match(dayTimeRegex);
+    const activityTextDayTime = activityTextDayTimeArr[0];
+
+    for(let i = 0; i < activities.length; i++){
+        const str = activities[i].nextSibling.textContent;
+        const dayTime = str.match(dayTimeRegex);
+
+        //Check to make sure there is a daytime value and it's not the same element
+        if(dayTime && str !== activityText){
+            //Check to see if daytime values match
+            if(activityTextDayTime === dayTime[0]){
+                //Check to see if it was checked or unchecked
+                if(checkedActivity.checked){
+                    $(activities[i]).attr('disabled', true)
+                } else {
+                    $(activities[i]).attr('disabled', false)
+                }
+            } else if (!activities[i].checked) {
+                $(activities[i]) .attr('disabled', false)
+            }
+        }
+    }
+};
 //Create total element in Javascript and append
 //Create variable to store running total and a function to update total element value
 
