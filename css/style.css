@@ -113,6 +113,15 @@ button:hover {
 	background: #184c62;
 }
 
+.validationError {
+	border: 2px solid tomato;
+}
+
+.errorMessage {
+	color: tomato;
+	font-style: italic;
+}
+
 /* ================================= 
   Page Styles
 ==================================== */

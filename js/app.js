@@ -1,13 +1,24 @@
 //Variables
 let totalCost = 0;
+
 //Selectors
 const color = $('#color');
 const activityList = $('.activities input');
 const totalCostElement = $('<p id="totalCost">Total Cost: $<span> -</span></p>');
+const creditCard = $('#credit-card');
+const payPal = creditCard.next();
+const bitCoin = creditCard.next().next();
+const paymentOptions = $('#payment');
 
 //Regex
 const dayTimeRegex = /— [\w\s\d-]+/;
 const priceRegex = /\$\d+/;
+const emailRegex = /^[\w\d-]+@[\w\d-]+.[\w\d-]+$/;
+const ccRegex = /^\d{13,16}$/;
+const zipRegex = /^\d{5}$/;
+const cvvRegex = /^\d{3}$/;
+
+
 
 //Set focus to the first field on page load
 $( window ).on('load', function() {
@@ -63,11 +74,6 @@ $('#design').on('change', (e) => {
 //----------
 // ACTIVITIES
 //----------
-//Pseudo coe to test regex
-// const dayTime =  "JavaScript Frameworks Workshop — Tuesday 9am-12pm, $100".match(dayTimeRegex); //returns an array
-// const price =  "JavaScript Frameworks Workshop — Tuesday 9am-12pm, $100".match(priceRegex);
-// const dayTimeChosen = dayTime[0];
-// const priceChosen = Number(price[0].replace(/\$/,''));
 
 //Event listener for change on activity list that will disable checkboxes if datetime match and tally total cost
 activityList.on('change', (e)=>{
@@ -102,7 +108,7 @@ const checkActivities = (activities, checkedActivity) => {
         }
     }
 };
-
+//Function to extract cost from string and add to a provided total
 const handleCost = (currentTotal, checkedActivity) => {
     const priceStr =  checkedActivity.nextSibling.textContent.match(priceRegex);
     const price = Number(priceStr[0].replace(/\$/,''));
@@ -112,10 +118,76 @@ const handleCost = (currentTotal, checkedActivity) => {
         return currentTotal -= price;
     }
 };
-//Create total element in Javascript and append
 
+//----------
+// PAYMENT INFO
+//----------
 
-//Create variable to store running total and a function to update total element value
+paymentOptions.children()[0].disabled = true;
+payPal.hide();
+bitCoin.hide();
 
+const hideAllPayments = () => {
+    creditCard.hide();
+    payPal.hide();
+    bitCoin.hide();
+};
 
+paymentOptions.on('change', (e) => {
+    const selectedPayment = e.target.value;
+    hideAllPayments();
+    if(selectedPayment === 'paypal'){
+        payPal.show();
+    } else if(selectedPayment === 'bitcoin'){
+        bitCoin.show();
+    } else {
+        creditCard.show();
+    }
+});
+
+//----------
+// FORM SUBMIT
+//----------
+
+$('form').on('submit', (e) => {
+    const userName = e.target["user_name"];
+    const userEmail = e.target["user_email"];
+    const userCC = e.target["user_cc-num"];
+    const userZip = e.target["user_zip"];
+    const userCvv = e.target["user_cvv"];
+
+    const activities = $(".activities", e.target);
+    const numActivitiesChecked = $('label input:checked', activities).length;
+    const activitiesErrorMessage = $("<p class=\"errorMessage\" >Select at least 1 activity.</p>");
+    $(activities).append(activitiesErrorMessage);
+    activitiesErrorMessage.hide();
+
+    if(!userName.value){
+        e.preventDefault();
+        $(userName).addClass("validationError")
+    } else {
+        $(userName).removeClass("validationError")
+    }
+
+    if(numActivitiesChecked < 1) {
+        e.preventDefault();
+        activitiesErrorMessage.show();
+    } else {
+        $('.errorMessage').hide();
+    }
+
+    validateInput(e, emailRegex, userEmail);
+    validateInput(e, ccRegex, userCC);
+    validateInput(e, zipRegex, userZip);
+    validateInput(e, cvvRegex, userCvv);
+});
+
+const validateInput = (event, regex, input) => {
+    if(!regex.test(input.value)){
+        event.preventDefault();
+        $(input).addClass("validationError")
+    } else {
+        $(input).removeClass("validationError")
+    }
+};
 
