@@ -120,6 +120,8 @@ button:hover {
 .errorMessage {
 	color: tomato;
 	font-style: italic;
+	display: block;
+	margin-bottom: 15px;
 }
 
 /* ================================= 
@@ -186,5 +188,9 @@ button:hover {
 	}
 	.col-6 {
 		width: 49%;
+	}
+	.col-12 {
+		float: left;
+		width: 100%;
 	}
 }
