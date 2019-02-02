@@ -161,7 +161,13 @@ $form.on('keyup', (e) => {
             hideError(elem, $nameErrorMessage);
         }
     } else if(elem.id === "mail"){
-        validateInput(e, emailRegex, elem, $emailErrorMessage);
+        if(!elem.value){
+            hideError(elem, $emailErrorMessage);
+            displayError(e, elem, $emailMissingErrorMessage);
+        } else {
+            hideError(elem, $emailMissingErrorMessage);
+            validateInput(e, emailRegex, elem, $emailErrorMessage);
+        }
     } else if(elem.id === "cc-num"){
         validateInput(e, ccRegex, elem, $creditCardErrorMessage);
     } else if(elem.id === "zip"){
@@ -192,6 +198,7 @@ $form.on('submit', (e) => {
 
     //Check email address
     if(!userEmail.value){
+        hideError(userEmail, $emailErrorMessage);
         displayError(e, userEmail, $emailMissingErrorMessage);
     } else {
         hideError(userEmail, $emailMissingErrorMessage);
